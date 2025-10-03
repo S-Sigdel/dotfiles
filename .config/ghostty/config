@@ -1,14 +1,14 @@
 custom-shader = shaders/cursor_smear.glsl
-custom-shader = shaders/bettercrt.glsl
-font-family = TX-02
+font-family = "TX-02"
 font-size = 16
 font-thicken = true
-theme="Konsolas"
 quick-terminal-animation-duration = 0
 cursor-style = block
 shell-integration-features = no-cursor
 cursor-style-blink = false
+gtk-titlebar = false
 link-url = true
 window-theme = system
 clipboard-trim-trailing-spaces = true
 mouse-hide-while-typing = true
+theme=Citruszest
