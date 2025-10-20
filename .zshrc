@@ -110,10 +110,6 @@ source $ZSH/oh-my-zsh.sh
 source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 alias n="nvim"
 alias pacman="sudo pacman"
-#zoxide for quick navigation
-export PATH=$PATH:/home/thinking/.local/bin
-eval "$(zoxide init --cmd cd zsh)"
-alias z="__zoxide_z"
 #vim mode
 bindkey -v
 
@@ -136,3 +132,21 @@ gitclone() {
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 
+
+# pnpm
+export PNPM_HOME="/home/thinking/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+#spicetify
+export PATH=$PATH:/home/thinking/.spicetify
+
+
+#zoxide for quick navigation
+export PATH=$PATH:/home/thinking/.local/bin
+eval "$(zoxide init --cmd cd zsh)"
+alias z="__zoxide_z"
+export PATH="$HOME/.npm-global/bin:$PATH"

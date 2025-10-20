@@ -12,3 +12,5 @@ window-theme = system
 clipboard-trim-trailing-spaces = true
 mouse-hide-while-typing = true
 theme=Citruszest
+background-opacity = 0.9
+confirm-close-surface = false

@@ -1,0 +1,6 @@
+<menu>
+    <item id="shutdown">Shutdown</item>
+    <item id="reboot">Reboot</item>
+    <item id="suspend">Suspend</item>
+    <item id="hibernate">Hibernate</item>
+</menu>
