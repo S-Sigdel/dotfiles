@@ -150,3 +150,21 @@ export PATH=$PATH:/home/thinking/.local/bin
 eval "$(zoxide init --cmd cd zsh)"
 alias z="__zoxide_z"
 export PATH="$HOME/.npm-global/bin:$PATH"
+alias gpp="g++ -pedantic-errors -Werror -ggdb -std=c++23"
+
+#rust
+export PATH=$PATH:/$HOME/.cargo/env
+
+
+#pyenv for dynamic python versioning
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+
+
+#alias for quick git setup
+alias s="git config --local user.email 'sakshyamsigdel@gmail.com' && git config --local user.name 'S-Sigdel'"
+
+alias edit='vim'
+
