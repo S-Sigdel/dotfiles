@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# Check if nordvpn is installed
+if ! command -v nordvpn &> /dev/null; then
+    echo "{\"text\":\"N/A\",\"tooltip\":\"NordVPN not installed\",\"class\":\"error\",\"alt\":\"error\"}"
+    exit 0
+fi
+
+# Get NordVPN status with timeout to prevent hanging
+status=$(timeout 3s nordvpn status 2>/dev/null)
+exit_code=$?
+
+# Check if command timed out or failed
+if [ $exit_code -ne 0 ]; then
+    echo "{\"text\":\"Error\",\"tooltip\":\"NordVPN daemon not responding\",\"class\":\"error\",\"alt\":\"error\"}"
+    exit 0
+fi
+
+# Parse status
+if echo "$status" | grep -qi "Connected"; then
+    # Extract connection details with improved parsing
+    server=$(echo "$status" | grep -i "^Server:" | cut -d':' -f2- | xargs)
+    hostname=$(echo "$status" | grep -i "^Hostname:" | cut -d':' -f2- | xargs)
+    country=$(echo "$status" | grep -i "^Country:" | cut -d':' -f2- | xargs)
+    city=$(echo "$status" | grep -i "^City:" | cut -d':' -f2- | xargs)
+    ip=$(echo "$status" | grep -i "^IP:" | cut -d':' -f2- | xargs)
+    technology=$(echo "$status" | grep -i "^Current technology:" | cut -d':' -f2- | xargs)
+    protocol=$(echo "$status" | grep -i "^Current protocol:" | cut -d':' -f2- | xargs)
+    uptime=$(echo "$status" | grep -i "^Uptime:" | cut -d':' -f2- | xargs)
+    
+    # Fallback values if parsing fails
+    country=${country:-"Unknown"}
+    server=${server:-"Unknown"}
+    
+    # Build tooltip
+    tooltip="🟢 Connected\\n"
+    [ -n "$server" ] && tooltip+="Server: $server\\n"
+    [ -n "$hostname" ] && tooltip+="Hostname: $hostname\\n"
+    [ -n "$city" ] && [ -n "$country" ] && tooltip+="Location: $city, $country\\n"
+    [ -n "$ip" ] && tooltip+="IP: $ip\\n"
+    [ -n "$technology" ] && tooltip+="Technology: $technology\\n"
+    [ -n "$protocol" ] && tooltip+="Protocol: $protocol\\n"
+    [ -n "$uptime" ] && tooltip+="Uptime: $uptime\\n"
+    tooltip+="\\nLeft click: Reconnect\\nRight click: Disconnect"
+    
+    # Use city abbreviation or country for display
+    display_text="$country"
+    if [ -n "$city" ]; then
+        # Shorten city name if too long
+        if [ ${#city} -gt 12 ]; then
+            display_text="${city:0:9}..."
+        else
+            display_text="$city"
+        fi
+    fi
+    
+    echo "{\"text\":\"$display_text\",\"tooltip\":\"$tooltip\",\"class\":\"connected\",\"alt\":\"connected\"}"
+    
+elif echo "$status" | grep -qi "Disconnected"; then
+    tooltip="🔴 Disconnected\\n\\nLeft click: Connect\\nRight click: Disconnect"
+    echo "{\"text\":\"Off\",\"tooltip\":\"$tooltip\",\"class\":\"disconnected\",\"alt\":\"disconnected\"}"
+    
+else
+    # Unknown state - possibly connecting
+    if echo "$status" | grep -qi "Connecting"; then
+        tooltip="🟡 Connecting...\\n\\nPlease wait"
+        echo "{\"text\":\"Connecting\",\"tooltip\":\"$tooltip\",\"class\":\"connecting\",\"alt\":\"connecting\"}"
+    else
+        tooltip="Status unknown\\n\\nClick to try connecting"
+        echo "{\"text\":\"Unknown\",\"tooltip\":\"$tooltip\",\"class\":\"unknown\",\"alt\":\"unknown\"}"
+    fi
+fi

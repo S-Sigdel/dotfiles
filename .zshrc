@@ -113,24 +113,8 @@ alias pacman="sudo pacman"
 #vim mode
 bindkey -v
 
-#git ssh key prompting
-gitclone() {
-  echo "Choose SSH key: 1) Personal  2) Work"
-  read choice
-  if [ "$choice" = "1" ]; then
-    ssh_key="$HOME/.ssh/id_ed25519"
-  elif [ "$choice" = "2" ]; then
-    ssh_key="$HOME/.ssh/id_ed25519_work"
-  else
-    echo "Invalid choice!"
-    return 1
-  fi
-  GIT_SSH_COMMAND="ssh -i $ssh_key" git clone "$1"
-}
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 
 
 # pnpm

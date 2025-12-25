@@ -10,6 +10,7 @@
     "clock"
   ],
   "modules-right": [
+    "custom/nordvpn",
     "custom/timer",
     "pulseaudio",
     "pulseaudio#microphone",
@@ -117,5 +118,19 @@
     "on-click-right": "/home/thinking/.local/bin/waybar_timer togglepause",
     "on-scroll-up": "/home/thinking/.local/bin/waybar_timer increase 60 || /home/thinking/.local/bin/waybar_timer new 1 'notify-send -u critical \"Timer expired\"'",
     "on-scroll-down": "/home/thinking/.local/bin/waybar_timer decrease 60"
+  },
+  "custom/nordvpn": {
+    "exec": "/home/thinking/.local/bin/waybar_nordvpn",
+    "exec-on-event": false,
+    "return-type": "json",
+    "interval": 5,
+    "format": "{icon} {0}",
+    "format-icons": {
+      "connected": "🛡️",
+      "disconnected": "🟡"
+    },
+    "tooltip": true,
+    "on-click": "nordvpn connect",
+    "on-click-right": "nordvpn disconnect"
   }
 }
