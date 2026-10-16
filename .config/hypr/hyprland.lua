@@ -347,6 +347,10 @@ hl.bind("CTRL + Print",     exec(ss .. " edit"))        -- region -> annotate
 hl.bind(key("Print"),       exec(ss .. " screen"))      -- current monitor
 hl.bind("ALT + Print",      exec(ss .. " window"))      -- active window
 
+-- screen recorder: F9 (with fn-lock off it sends KEY_NOTIFICATION_CENTER = XF86NotificationCenter)
+-- press: pick area / click a monitor, press again: stop + save (see scripts/record.sh)
+hl.bind("XF86NotificationCenter", exec("~/.config/hypr/scripts/record.sh"))
+
 ------------------------
 ---- WINDOW RULES ------
 ------------------------

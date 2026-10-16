@@ -13,6 +13,7 @@
     "clock"
   ],
   "modules-right": [
+    "custom/recording",
     "custom/media",
     "cpu",
     "memory",
@@ -193,5 +194,12 @@
     "on-click": "playerctl play-pause",
     "on-scroll-up": "playerctl next",
     "on-scroll-down": "playerctl previous"
+  },
+  "custom/recording": {
+    "exec": "~/.config/hypr/scripts/record.sh status",
+    "return-type": "json",
+    "interval": 1,
+    "signal": 9,
+    "on-click": "~/.config/hypr/scripts/record.sh"
   }
 }

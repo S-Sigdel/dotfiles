@@ -113,3 +113,13 @@ tooltip label { color: @fg; padding: 2px 4px; }
 #custom-notification.dnd-notification { color: @warn; }
 #custom-notification.invisible { color: @faint; }
 #custom-notification:hover { background: alpha(#ffffff, 0.04); }
+
+/* screen recording indicator (hypr/scripts/record.sh) */
+#custom-recording.recording {
+    color: @crit;
+    padding: 0 12px;
+    margin-right: 6px;
+    animation: rec-pulse 1.4s ease-in-out infinite alternate;
+}
+#custom-recording:hover { background: alpha(#ffffff, 0.04); }
+@keyframes rec-pulse { to { color: alpha(@crit, 0.45); } }
