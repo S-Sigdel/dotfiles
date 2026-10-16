@@ -1,29 +1,37 @@
 #!/usr/bin/env bash
 # Desktop audio visualizer: cava bars drawn on the desktop (above the wallpaper,
-# below windows) on every monitor, via kitty's layer-shell "background" panel.
+# below windows) on every monitor, via a kitty layer-shell panel on the "bottom"
+# layer. (Not --edge=background: that shares the wallpaper's layer, and every
+# wallpaper change makes hyprpaper a fresh surface that covers the bars.)
 # Follows hotplug: a monitor that gets connected gets its own bars, a removed
 # monitor's bars are cleaned up. Started by hyprland.lua; re-running restarts it.
 #
 #   visualizer.sh          run (one instance; replaces a previous one)
 #   visualizer.sh stop     remove all bars
 
-CONF="$HOME/.config/cava/visualizer.conf"
+BASE="$HOME/.config/cava/visualizer.conf"
 HEIGHT_PCT=30            # bars live in the bottom 30% of each screen
 SIDE_MARGIN=24
 RUN="${XDG_RUNTIME_DIR:-/tmp}/visualizer"
 SOCK="$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
 mkdir -p "$RUN"
+# cava reads a runtime copy whose colours follow the wallpaper (cava-colors.py)
+CONF="$RUN/cava.conf"
+cp "$BASE" "$CONF"
+python3 -I "$HOME/.config/hypr/scripts/cava-colors.py" --restore >/dev/null 2>&1
 
 start_on() {  # $1 = monitor name
-  local mon=$1 h top
+  local mon=$1 h height
   [ -f "$RUN/$mon.pid" ] && kill -0 "$(cat "$RUN/$mon.pid")" 2>/dev/null && return
   # logical height (rotated monitors swap width/height)
   h=$(hyprctl monitors -j | jq -r --arg m "$mon" \
       '.[] | select(.name == $m) | ((if (.transform % 2) == 1 then .width else .height end) / .scale | floor)')
   [ -z "$h" ] && return
-  top=$(( h * (100 - HEIGHT_PCT) / 100 ))
-  kitten panel --edge=background --layer=bottom --output-name "$mon" \
-    --margin-top "$top" --margin-left "$SIDE_MARGIN" --margin-right "$SIDE_MARGIN" \
+  height=$(( h * HEIGHT_PCT / 100 ))
+  # exclusive zone 0: sit on the desktop without pushing windows up
+  kitten panel --edge=bottom --layer=bottom --output-name "$mon" --lines "${height}px" \
+    --exclusive-zone 0 --override-exclusive-zone --focus-policy not-allowed \
+    --margin-left "$SIDE_MARGIN" --margin-right "$SIDE_MARGIN" \
     --class cava-bg \
     -o background_opacity=0 -o window_padding_width=0 -o font_size=7 \
     -o confirm_os_window_close=0 -o scrollback_lines=0 -o enable_audio_bell=no \

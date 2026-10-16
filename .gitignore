@@ -8,3 +8,7 @@
 .config/cava/config
 .config/cava/shaders/
 .config/cava/themes/
+# generated from the wallpaper by hypr/scripts/brave-theme.py
+.config/brave-theme/
+# editor / manual backups
+*.bak

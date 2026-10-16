@@ -19,9 +19,9 @@ close() {
 info() { info_id=$(notify-send -p -a Power -r "$info_id" -e "$@"); }
 warn() { close "$warn_id"; warn_id=$(notify-send -p -a Power -u critical "$@"); }
 
-last_ac=$(cat $AC); warned_low=0; warned_crit=0; warned_full=0
+last_ac=$(<$AC); warned_low=0; warned_crit=0; warned_full=0
 while sleep 2; do
-  ac=$(cat $AC); cap=$(cat $BAT/capacity); st=$(cat $BAT/status)
+  ac=$(<$AC); cap=$(<$BAT/capacity); st=$(<$BAT/status)   # builtins: no forks every 2 s
 
   if [ "$ac" != "$last_ac" ]; then
     if [ "$ac" = 1 ]; then

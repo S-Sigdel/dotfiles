@@ -37,10 +37,13 @@ hl.on("hyprland.start", function()
     -- (self-restarting: waybar.service.d/autorestart.conf) and notifications
     -- (on the live mode config: swaync.service.d/live-config.conf)
     hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE && systemctl --user restart waybar swaync")
-    hl.exec_cmd("hyprpaper")
+    hl.exec_cmd("~/.config/hypr/scripts/wallpaper.sh")   -- awww (animated changes) if installed, else hyprpaper
     hl.exec_cmd("~/.config/hypr/scripts/visualizer.sh")   -- audio bars on the desktop, every monitor
     hl.exec_cmd("~/.config/hypr/scripts/record-picker.py serve")   -- F9 recorder dialog, preloaded so it opens instantly
     hl.exec_cmd("ghostty --initial-window=false")   -- warm terminal daemon: instant SUPER+Enter
+    hl.exec_cmd("qs -p ~/.config/hypr/wallspill")      -- SUPER+Space wallpapers spill in from the centre
+    hl.exec_cmd("~/.config/hypr/scripts/desktop-idle.sh")   -- pause live wallpaper + visualizer while windows cover them
+    hl.exec_cmd("qs -p ~/.config/hypr/flip3d")         -- Flip 3D window switcher (SUPER+Tab, 3-finger swipe up)
     hl.exec_cmd("swayosd-server -s ~/.config/swayosd/style.css --top-margin 0.82")
     hl.exec_cmd("wl-paste --type text --watch cliphist -db-path /tmp/cliphist.db -max-items 100 store")
     hl.exec_cmd("wl-paste --type image --watch cliphist -db-path /tmp/cliphist.db -max-items 100 store")
@@ -215,6 +218,11 @@ hl.config({
 
 hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
 
+-- Flip 3D switcher (flip3d/shell.qml): swipe up opens / flips to the next window, down backs out
+local function flip(name) return function() hl.dispatch(hl.dsp.global("flip3d:" .. name)) end end
+hl.gesture({ fingers = 3, direction = "up",   action = flip("up") })
+hl.gesture({ fingers = 3, direction = "down", action = flip("down") })
+
 -- Touchpad a touch faster than mice, like a MacBook trackpad
 -- Per-device settings don't inherit input.touchpad in the Lua config, so the
 -- touchpad's tap/click/scroll behaviour is spelled out here too.
@@ -246,7 +254,7 @@ hl.bind(key("P"),           hl.dsp.window.pseudo())
 hl.bind(key("O"),           hl.dsp.layout("togglesplit"))
 hl.bind(key("W"),           hl.dsp.window.fullscreen())
 hl.bind(key("space"),       exec("~/.config/hypr/change_wall.sh"))
-hl.bind(key("SHIFT + Y"),   exec("hyprlock"))
+hl.bind(key("SHIFT + Y"),   exec("~/.config/hypr/scripts/lock.sh"))
 hl.bind(key("G"),           exec("/home/thinking/.config/hypr/scripts/toggle-grayscale.sh"))
 hl.bind(key("Z"),           exec("wshowkeys -a bottom -m 80 -t 1500 -o HDMI-A-1 -p"))
 hl.bind(key("SHIFT + V"),   exec("~/.config/hypr/cliphist-rofi.sh"))
@@ -305,6 +313,10 @@ for i = 1, 10 do
     hl.bind(key(n),               hl.dsp.focus({ workspace = i }))
     hl.bind(key("SHIFT + " .. n), hl.dsp.window.move({ workspace = i }))
 end
+
+-- Flip 3D switcher: open, then keep tapping to cycle (Enter / click to go, Esc to back out)
+hl.bind(key("TAB"),         hl.dsp.global("flip3d:next"))
+hl.bind(key("SHIFT + TAB"), hl.dsp.global("flip3d:prev"))
 
 -- scratchpad
 hl.bind(key("S"),         hl.dsp.workspace.toggle_special("magic"))
@@ -394,3 +406,4 @@ hl.layer_rule({ name = "rofi-anim",   match = { namespace = "rofi" },           
 hl.layer_rule({ name = "swaync-anim", match = { namespace = "swaync-control-center" }, animation = "fade" })
 hl.layer_rule({ name = "no-anim-selection",  match = { namespace = "selection" },  no_anim = true })
 hl.layer_rule({ name = "no-anim-hyprpicker", match = { namespace = "hyprpicker" }, no_anim = true })
+hl.layer_rule({ name = "no-anim-flip3d",     match = { namespace = "flip3d" },     no_anim = true })   -- it animates itself

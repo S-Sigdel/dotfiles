@@ -9,7 +9,8 @@ MONITOR="HDMI-A-1"
 hyprctl monitors -j | jq -e --arg m "$MONITOR" 'any(.[]; .name == $m)' >/dev/null ||
   MONITOR="$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')"
 
-mapfile -t WALLS < <(find "$DIR" -maxdepth 1 -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) -printf '%f\n' | sort)
+# -L: follow symlinks, so wallpapers kept elsewhere (e.g. ../moon.png) can be linked in
+mapfile -t WALLS < <(find -L "$DIR" -maxdepth 1 -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.mp4' -o -iname '*.webm' \) -printf '%f\n' | sort)
 TOTAL=${#WALLS[@]}
 [ "$TOTAL" -eq 0 ] && exit 1
 
@@ -17,4 +18,12 @@ INDEX=$(cat "$STATE" 2>/dev/null || echo -1)
 INDEX=$(((INDEX + 1) % TOTAL))
 echo "$INDEX" >"$STATE"
 
-hyprctl hyprpaper wallpaper "$MONITOR,$DIR/${WALLS[$INDEX]}"
+WALL="$DIR/${WALLS[$INDEX]}"
+if pgrep -x awww-daemon >/dev/null; then
+  # spills out from the centre in an organic blob, live ones already playing (wallspill/);
+  # straight onto awww if the overlay isn't running
+  qs -p ~/.config/hypr/wallspill ipc call spill to "$MONITOR" "$WALL" 2>/dev/null ||
+    ~/.config/hypr/wallspill/apply.sh "$MONITOR" "$WALL"
+else
+  hyprctl hyprpaper wallpaper "$MONITOR,$WALL"
+fi
