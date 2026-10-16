@@ -1,0 +1,12 @@
+# Own copy of waybar.service (overrides /usr/lib/systemd/user/waybar.service):
+# started by Hyprland (hyprland.lua) instead of graphical-session.target, and
+# brought back automatically if it ever crashes.
+[Unit]
+Description=Waybar (auto-restarting)
+Documentation=https://github.com/Alexays/Waybar/wiki/
+
+[Service]
+ExecStart=/usr/bin/waybar
+ExecReload=kill -SIGUSR2 $MAINPID
+Restart=always
+RestartSec=1

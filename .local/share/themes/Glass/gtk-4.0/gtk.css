@@ -1,0 +1,224 @@
+/* Glass - muted GTK4 theme (used for pavucontrol). Builds on GTK's own dark theme. */
+@import url("resource:///org/gtk/libgtk/theme/Default/Default-dark.css");
+
+@define-color g_bg      #15161d;
+@define-color g_side    #101117;
+@define-color g_card    rgba(255,255,255,0.035);
+@define-color g_hover   rgba(255,255,255,0.06);
+@define-color g_line    rgba(255,255,255,0.07);
+@define-color g_fg      #c9ccd4;
+@define-color g_fg_hi   #e2e4ea;
+@define-color g_dim     #6e7585;
+@define-color g_accent  #a9c2d6;
+
+/* override the base theme's named colors so everything inherits */
+@define-color window_bg_color   @g_bg;
+@define-color window_fg_color   @g_fg;
+@define-color view_bg_color     @g_bg;
+@define-color view_fg_color     @g_fg;
+@define-color headerbar_bg_color @g_side;
+@define-color card_bg_color     @g_card;
+@define-color accent_bg_color   @g_accent;
+@define-color accent_color      @g_accent;
+@define-color accent_fg_color   #101117;
+@define-color borders           @g_line;
+
+* { font-family: "GeistMono Nerd Font", sans-serif; }
+
+window, window.background, .background {
+  background-color: @g_bg;
+  color: @g_fg;
+}
+
+/* tabs (Playback / Recording / Output / Input / Configuration) */
+notebook > header {
+  background: @g_side;
+  border: none;
+  box-shadow: none;
+  padding: 8px 10px 6px;
+}
+notebook > header tabs { margin: 0; }
+notebook > header tab {
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  box-shadow: none;
+  padding: 6px 14px;
+  margin: 0 2px;
+  color: @g_dim;
+  min-height: 0;
+  transition: background 150ms ease, color 150ms ease;
+}
+notebook > header tab:hover   { background: @g_hover; color: @g_fg; }
+notebook > header tab:checked { background: alpha(@g_accent, 0.16); color: @g_fg_hi; box-shadow: none; }
+notebook > header.top > tabs > tab:checked { box-shadow: none; }
+notebook > stack { background: @g_bg; }
+
+/* each stream / device row as a soft card */
+list, listview, .view, viewport, scrolledwindow { background: transparent; }
+list > row, listview > row {
+  background: @g_card;
+  border-radius: 14px;
+  margin: 6px 10px;
+  padding: 10px 12px;
+  border: 1px solid @g_line;
+}
+list > row:hover, listview > row:hover { background: @g_hover; }
+list > row:selected { background: alpha(@g_accent, 0.10); }
+separator { background: transparent; min-height: 0; min-width: 0; }
+
+label { color: @g_fg; }
+label.dim-label, .dim-label { color: @g_dim; }
+
+/* volume sliders */
+scale trough {
+  background: rgba(255,255,255,0.08);
+  border: none;
+  border-radius: 99px;
+  min-height: 6px;
+}
+scale highlight {
+  background: @g_accent;
+  border: none;
+  border-radius: 99px;
+}
+scale slider {
+  background: @g_fg_hi;
+  border: none;
+  border-radius: 99px;
+  min-width: 16px;
+  min-height: 16px;
+  margin: -6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+scale slider:hover { background: #ffffff; }
+scale marks, scale mark indicator { color: @g_dim; }
+
+/* live peak meters */
+levelbar trough {
+  background: rgba(255,255,255,0.05);
+  border: none;
+  border-radius: 99px;
+  min-height: 4px;
+  padding: 0;
+}
+levelbar block.filled, levelbar block.low, levelbar block.high, levelbar block.full {
+  background: alpha(@g_accent, 0.75);
+  border: none;
+  border-radius: 99px;
+}
+levelbar block.empty { background: transparent; border: none; }
+
+/* buttons: mute / lock / dropdowns */
+button {
+  background: @g_card;
+  background-image: none;
+  border: 1px solid @g_line;
+  border-radius: 10px;
+  box-shadow: none;
+  color: @g_fg;
+  padding: 4px 10px;
+  min-height: 28px;
+}
+button:hover   { background: @g_hover; }
+button:checked { background: alpha(@g_accent, 0.18); border-color: alpha(@g_accent, 0.35); color: @g_fg_hi; }
+button:disabled { opacity: 0.4; }
+button.flat, button.image-button { background: transparent; border-color: transparent; }
+button.flat:hover, button.image-button:hover { background: @g_hover; }
+
+dropdown > button, combobox > box > button { padding: 4px 12px; }
+popover > contents, popover.menu > contents {
+  background: @g_side;
+  border: 1px solid @g_line;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+  padding: 4px;
+}
+popover modelbutton, popover row { border-radius: 8px; padding: 6px 10px; }
+popover modelbutton:hover, popover row:hover { background: @g_hover; }
+
+checkbutton check, checkbutton radio {
+  background: @g_card;
+  border: 1px solid @g_line;
+  box-shadow: none;
+}
+checkbutton check:checked, checkbutton radio:checked {
+  background: @g_accent;
+  border-color: @g_accent;
+  color: #101117;
+}
+
+/* bottom "Show:" bar */
+actionbar, .toolbar, box.toolbar {
+  background: @g_side;
+  border-top: 1px solid @g_line;
+  padding: 6px 10px;
+}
+
+scrollbar { background: transparent; border: none; }
+scrollbar slider { background: rgba(255,255,255,0.15); border-radius: 99px; min-width: 6px; min-height: 6px; border: none; }
+scrollbar slider:hover { background: rgba(255,255,255,0.28); }
+
+/* ── specificity overrides: match GTK Default theme's own selectors ── */
+window.background, .background { background-color: @g_bg; color: @g_fg; }
+notebook > stack:not(:only-child) { background-color: @g_bg; }
+.view, iconview { background-color: transparent; color: @g_fg; }
+
+scale > trough {
+  background-color: rgba(255,255,255,0.08);
+  background-image: none;
+  border: none;
+  border-radius: 99px;
+  min-height: 6px;
+}
+scale > trough > highlight,
+scale > trough > fill {
+  background-color: @g_accent;
+  background-image: none;
+  border: none;
+  border-radius: 99px;
+}
+scale > trough > slider,
+scale > trough > slider:hover,
+scale > trough > slider:active {
+  background-color: @g_fg_hi;
+  background-image: none;
+  border: none;
+  border-radius: 99px;
+  min-width: 16px;
+  min-height: 16px;
+  margin: -6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.45);
+}
+scale > marks { color: @g_dim; }
+scale > marks > mark > indicator { background-color: @g_line; }
+
+levelbar > trough { background: transparent; border: none; padding: 0; }
+levelbar > trough > block.empty { background-color: rgba(255,255,255,0.05); border-color: transparent; }
+levelbar > trough > block.low,
+levelbar > trough > block.high,
+levelbar > trough > block.full,
+levelbar > trough > block:not(.empty) {
+  background-color: alpha(@g_accent, 0.75);
+  border-color: transparent;
+}
+levelbar.horizontal trough > block { min-height: 4px; border-radius: 99px; }
+
+notebook > header > tabs > tab:checked { box-shadow: none; }
+
+/* sliders on scales with tick marks (pavucontrol volume) use an image knob - replace with a round one */
+scale.horizontal.marks-before:not(.marks-after) > trough > slider,
+scale.horizontal.marks-before:not(.marks-after) > trough > slider:hover,
+scale.horizontal.marks-before:not(.marks-after) > trough > slider:active,
+scale.horizontal.marks-after:not(.marks-before) > trough > slider,
+scale.horizontal.marks-after:not(.marks-before) > trough > slider:hover,
+scale.horizontal.marks-after:not(.marks-before) > trough > slider:active {
+  background-color: @g_fg_hi;
+  background-image: none;
+  border-style: none;
+  border-radius: 99px;
+  min-width: 16px;
+  min-height: 16px;
+  margin: -6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.45);
+}

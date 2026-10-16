@@ -112,7 +112,11 @@ alias n="nvim"
 alias pacman="sudo pacman"
 #vim mode
 bindkey -v
-
+# let some of the emacs feature stay. ;p
+bindkey -M viins '^R' history-incremental-search-backward
+bindkey -M vicmd '^R' history-incremental-search-backward
+bindkey -M viins '^A' beginning-of-line
+bindkey -M viins '^E' end-of-line
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -134,10 +138,10 @@ export PATH=$PATH:/home/thinking/.local/bin
 eval "$(zoxide init --cmd cd zsh)"
 alias z="__zoxide_z"
 export PATH="$HOME/.npm-global/bin:$PATH"
-alias gpp="g++ -pedantic-errors -Werror -ggdb -std=c++23"
+alias gpp="g++ -Wall -pedantic-errors -Werror -ggdb -std=c++23"
 
 #rust
-export PATH=$PATH:/$HOME/.cargo/env
+export PATH=$PATH:$HOME/.cargo/bin
 
 
 #pyenv for dynamic python versioning
@@ -147,8 +151,36 @@ eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 
 
-#alias for quick git setup
+#alias for quick setups
 alias s="git config --local user.email 'sakshyamsigdel@gmail.com' && git config --local user.name 'S-Sigdel'"
 
 alias edit='vim'
+alias ignoreit="curl -fsSL https://raw.githubusercontent.com/razzat008/ignoreit/refs/heads/master/useit.sh | sh -s -- "
 
+alias usm="~/scripts/usmvpn.sh"
+
+alias claude1='CLAUDE_CONFIG_DIR=~/.claude command claude'
+alias claude2='CLAUDE_CONFIG_DIR=~/.claude-academic command claude'
+alias claude3='CLAUDE_CONFIG_DIR=~/.claude-trevor command claude'
+alias ranger='TERM=xterm-kitty ranger' #tell ranger that the current terminal is kitty for image rendering
+
+claude() {
+  echo "Don't use 'claude' directly. Use 'claude1' personal or 'claude2'  work or 'claude3' for trevor."
+  return 1
+}
+
+# opencode
+export PATH=/home/thinking/.opencode/bin:$PATH
+
+#nvim
+export EDITOR="/usr/bin/nvim"
+# Added by Antigravity CLI installer
+export PATH="/home/thinking/.local/bin:$PATH"
+
+alias ssh="env TERM=xterm-256color ssh"
+
+alias farm="cd /home/thinking/winboat/shared/new/The Farmer Was Replaced/ && umu-run TheFarmerWasReplaced.exe"
+alias farm='cd "/home/thinking/winboat/shared/new/The Farmer Was Replaced/" && umu-run TheFarmerWasReplaced.exe'
+
+alias pavucontrol='GTK_THEME=Glass pavucontrol'
+alias fastfetch='~/.config/fastfetch/ff.sh'

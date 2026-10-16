@@ -1,0 +1,147 @@
+/* Nemo - muted, low contrast, matches waybar/rofi.
+   Scoped to .nemo-window so other GTK3 apps keep stock Adwaita-dark. */
+
+@define-color nm_bg       #15161d;
+@define-color nm_side     #101117;
+@define-color nm_line     rgba(255,255,255,0.06);
+@define-color nm_hover    rgba(255,255,255,0.05);
+@define-color nm_sel      rgba(169,194,214,0.16);
+@define-color nm_fg       #c9ccd4;
+@define-color nm_dim      #6e7585;
+@define-color nm_accent   #a9c2d6;
+
+.nemo-window,
+.nemo-window .view,
+.nemo-window iconview,
+.nemo-window treeview.view,
+.nemo-window scrolledwindow,
+.nemo-window viewport {
+    background-color: @nm_bg;
+    color: @nm_fg;
+}
+
+/* toolbar / headerbar: flat, no gradients or bevels */
+.nemo-window toolbar,
+.nemo-window .primary-toolbar,
+.nemo-window headerbar,
+.nemo-window menubar {
+    background: @nm_side;
+    background-image: none;
+    border: none;
+    border-bottom: 1px solid @nm_line;
+    box-shadow: none;
+    padding: 6px 8px;
+}
+
+.nemo-window toolbar button,
+.nemo-window .primary-toolbar button {
+    background: transparent;
+    background-image: none;
+    border: none;
+    box-shadow: none;
+    border-radius: 8px;
+    padding: 5px 8px;
+    color: @nm_dim;
+    transition: background 150ms ease, color 150ms ease;
+}
+.nemo-window toolbar button:hover { background: @nm_hover; color: @nm_fg; }
+.nemo-window toolbar button:checked,
+.nemo-window toolbar button:active { background: @nm_sel; color: @nm_fg; }
+
+/* path bar: breadcrumb pills */
+.nemo-window .path-bar button {
+    border-radius: 8px;
+    margin: 0 1px;
+    padding: 4px 10px;
+    color: @nm_dim;
+}
+.nemo-window .path-bar button:checked {
+    background: @nm_sel;
+    color: @nm_fg;
+}
+
+/* location entry */
+.nemo-window entry {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid @nm_line;
+    border-radius: 8px;
+    box-shadow: none;
+    color: @nm_fg;
+    padding: 4px 10px;
+}
+.nemo-window entry:focus { border-color: alpha(@nm_accent, 0.5); }
+
+/* sidebar */
+.nemo-window .sidebar,
+.nemo-window .sidebar .view,
+.nemo-window .nemo-places-sidebar,
+.nemo-window .nemo-places-sidebar treeview {
+    background-color: @nm_side;
+    color: @nm_fg;
+    border: none;
+}
+.nemo-window .sidebar .view:hover,
+.nemo-window .nemo-places-sidebar treeview:hover { background-color: @nm_hover; }
+.nemo-window .sidebar .view:selected,
+.nemo-window .nemo-places-sidebar treeview:selected {
+    background-color: @nm_sel;
+    color: #e2e4ea;
+}
+.nemo-window .nemo-places-sidebar treeview.expander { color: @nm_dim; }
+
+/* pane divider */
+.nemo-window paned > separator {
+    background: @nm_line;
+    min-width: 1px;
+    background-image: none;
+}
+
+/* files: soft rounded selection */
+.nemo-window .view:selected,
+.nemo-window iconview:selected,
+.nemo-window treeview.view:selected,
+.nemo-window .view text:selected {
+    background-color: @nm_sel;
+    color: #e2e4ea;
+    border-radius: 8px;
+}
+.nemo-window iconview.cell:hover,
+.nemo-window treeview.view:hover { background-color: @nm_hover; }
+.nemo-window .view.rubberband,
+.nemo-window .rubberband {
+    background-color: alpha(@nm_accent, 0.12);
+    border: 1px solid alpha(@nm_accent, 0.5);
+    border-radius: 6px;
+}
+
+/* list view column headers */
+.nemo-window treeview.view header button {
+    background: @nm_bg;
+    background-image: none;
+    border: none;
+    border-bottom: 1px solid @nm_line;
+    box-shadow: none;
+    color: @nm_dim;
+    font-weight: 600;
+}
+
+/* status bar & scrollbars */
+.nemo-window statusbar,
+.nemo-window .nemo-window-statusbar {
+    background: @nm_side;
+    color: @nm_dim;
+    border-top: 1px solid @nm_line;
+}
+.nemo-window scrollbar { background: transparent; border: none; }
+.nemo-window scrollbar slider {
+    background: rgba(255,255,255,0.15);
+    border-radius: 99px;
+    min-width: 6px;
+    min-height: 6px;
+}
+.nemo-window scrollbar slider:hover { background: rgba(255,255,255,0.28); }
+
+/* tabs */
+.nemo-window notebook header { background: @nm_side; border: none; box-shadow: none; }
+.nemo-window notebook tab { border-radius: 8px; padding: 4px 12px; color: @nm_dim; }
+.nemo-window notebook tab:checked { background: @nm_sel; color: @nm_fg; }

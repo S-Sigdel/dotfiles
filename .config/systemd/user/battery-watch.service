@@ -1,0 +1,11 @@
+[Unit]
+Description=Battery plug/unplug and low/full notifications
+After=default.target
+
+[Service]
+ExecStart=%h/.config/hypr/scripts/battery-watch.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

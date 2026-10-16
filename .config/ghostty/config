@@ -14,3 +14,9 @@ mouse-hide-while-typing = true
 theme=Citruszest
 background-opacity = 0.9
 confirm-close-surface = false
+
+# Instant windows: keep one ghostty process alive in the background
+# (started by Hyprland) and open new windows inside it instead of
+# cold-starting GTK + GPU + shaders every time.
+gtk-single-instance = true
+quit-after-last-window-closed = false

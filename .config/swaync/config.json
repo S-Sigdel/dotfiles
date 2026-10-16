@@ -1,0 +1,66 @@
+{
+  "$schema": "/etc/xdg/swaync/configSchema.json",
+  "positionX": "right",
+  "positionY": "top",
+  "layer": "overlay",
+  "control-center-layer": "top",
+  "layer-shell": true,
+  "cssPriority": "user",
+  "control-center-margin-top": 6,
+  "control-center-margin-bottom": 6,
+  "control-center-margin-right": 6,
+  "control-center-margin-left": 0,
+  "control-center-width": 380,
+  "fit-to-screen": false,
+  "notification-window-width": 380,
+  "notification-icon-size": 44,
+  "notification-body-image-height": 120,
+  "notification-body-image-width": 200,
+  "notification-2fa-action": true,
+  "notification-inline-replies": false,
+  "image-visibility": "when-available",
+  "timeout": 6,
+  "timeout-low": 3,
+  "timeout-critical": 0,
+  "transition-time": 180,
+  "keyboard-shortcuts": true,
+  "hide-on-clear": false,
+  "hide-on-action": true,
+  "script-fail-notify": true,
+  "widgets": [
+    "title",
+    "buttons-grid#modes",
+    "notifications"
+  ],
+  "widget-config": {
+    "title": {
+      "text": "Notifications",
+      "clear-all-button": true,
+      "button-text": "Clear"
+    },
+    "buttons-grid#modes": {
+      "buttons-per-row": 3,
+      "actions": [
+        {
+          "label": "󰂚  Normal",
+          "type": "toggle",
+          "command": "~/.config/hypr/scripts/notif-mode.sh normal",
+          "update-command": "~/.config/hypr/scripts/notif-mode.sh is normal"
+        },
+        {
+          "label": "󰂛  Silent",
+          "type": "toggle",
+          "command": "~/.config/hypr/scripts/notif-mode.sh silent",
+          "update-command": "~/.config/hypr/scripts/notif-mode.sh is silent"
+        },
+        {
+          "label": "󰈉  Invisible",
+          "type": "toggle",
+          "command": "~/.config/hypr/scripts/notif-mode.sh invisible",
+          "update-command": "~/.config/hypr/scripts/notif-mode.sh is invisible"
+        }
+      ]
+    }
+  },
+  "control-center-height": 480
+}

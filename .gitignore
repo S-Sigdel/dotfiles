@@ -1,0 +1,6 @@
+# icon themes installed locally (big, not ours)
+.local/share/icons/Papirus/
+.local/share/icons/Papirus-Dark/
+# app-generated icons (wine, jetbrains toolbox) + caches
+.local/share/icons/hicolor/
+**/icon-theme.cache

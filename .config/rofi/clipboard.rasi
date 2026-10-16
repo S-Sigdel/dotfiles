@@ -1,0 +1,12 @@
+/* clipboard picker - glass theme with room for image thumbnails */
+@import "~/.config/rofi/glass.rasi"
+
+window   { width: 680px; }
+listview { lines: 7; spacing: 4px; }
+element  { padding: 8px 12px; spacing: 14px; }
+element-icon {
+    size:          48px;
+    border-radius: 8px;
+}
+element-text { vertical-align: 0.5; }
+textbox      { horizontal-align: 0.5; }

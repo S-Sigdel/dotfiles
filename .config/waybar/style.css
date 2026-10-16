@@ -1,106 +1,115 @@
+/* Full-width flat bar - muted, low contrast */
+
+@define-color bg      #101117;
+@define-color fg      #c9ccd4;
+@define-color dim     #6e7585;
+@define-color faint   #3a3e4a;
+@define-color accent  #a9c2d6;   /* soft steel blue */
+@define-color warn    #d8b98a;
+@define-color crit    #d08a8a;
+
 * {
-    /* Matched to Ghostty config */
-    font-family: "TX-02", "JetBrainsMono Nerd Font", monospace;
-    font-size: 16px; /* Matched to Ghostty size: to match with terminal */
+    font-family: "TX-02", "JetBrainsMono Nerd Font", "Noto Sans CJK JP", monospace;
+    font-size: 13.5px;
     font-weight: 500;
     border: none;
-    border-radius: 0px;
+    border-radius: 0;
     min-height: 0;
 }
 
 window#waybar {
-    background-color: rgba(17, 17, 17, 0.5);
-    border-bottom: 1px solid rgba(80, 250, 123, 0.3);
-    color: #eeeeee;
+    background: alpha(@bg, 0.72);
+    border-bottom: 1px solid alpha(#ffffff, 0.04);
+    color: @fg;
+    transition: background 0.4s ease;
 }
 
-#workspaces button {
+tooltip {
+    background: alpha(@bg, 0.95);
+    border: 1px solid alpha(#ffffff, 0.08);
+    border-radius: 10px;
+}
+tooltip label { color: @fg; padding: 2px 4px; }
+
+#custom-logo, #window, #custom-media, #clock,
+#custom-hw-icon, #cpu, #memory, #temperature,
+#pulseaudio, #backlight, #network, #battery, #custom-power {
     padding: 0 10px;
-    color: #777777;
-    border-radius: 0px;
+    color: @fg;
+    transition: background 0.25s ease, color 0.25s ease;
 }
 
-#workspaces button.active {
-    color: #ffffff;
-    background-color: rgba(34, 34, 34, 0.8);
-    border-bottom: 2px solid #50fa7b;
+/* breathing room between groups (replaces the old · separators) */
+#window          { margin-left: 10px; }
+#custom-media           { margin-right: 14px; }
+#temperature     { margin-right: 14px; }
+#battery         { margin-right: 10px; }
+
+/* ── left ── */
+#custom-logo {
+    color: @accent;
+    font-size: 16px;
+    padding: 0 12px 0 16px;
 }
 
-#workspaces button:hover {
-    background-color: rgba(51, 51, 51, 0.8);
-    color: #ffffff;
-}
-
-#cpu, #memory, #temperature, #pulseaudio, #backlight, #network, #battery, #clock {
-    padding: 0 14px;
-    margin: 4px 0;
-    background-color: transparent;
-    color: #ffffff;
-}
-
-#clock {
-    font-weight: 700;
-    letter-spacing: 0px;
-}
-
-label {
-    margin-right: 6px;
-}
-
-/* Battery States */
-#battery.charging, #battery.plugged {
-    color: #ffffff;
-    background-color: rgba(80, 250, 123, 0.1);
-}
-
-#battery.critical:not(.charging) {
-    background-color: #ff5555;
-    color: #111111;
-    animation-name: blink;
-    animation-duration: 0.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-}
-
-@keyframes blink {
-    to {
-        background-color: #ffffff;
-        color: #000000;
-    }
-}
-
-#custom-timer {
-    padding: 0 14px;
-    margin: 4px 0;
-    background-color: transparent;
-    color: #eeeeee;
-    border-radius: 0px;
-    /* Adding a subtle bottom border to match active workspaces when running */
-    border-bottom: 2px solid transparent;
-    transition: all 0.3s ease;
-}
-
-#custom-timer.running {
-    color: #ffffff;
-    border-bottom: 2px solid #50fa7b; /* Subtle green line like active workspace */
-}
-
-#custom-timer.paused {
-    color: #f1fa8c; /* Subtle yellow text */
-    border-bottom: 2px solid #f1fa8c;
-}
-
-#custom-timer.standby {
-    color: #777777;
-    border-bottom: 2px solid transparent;
-}
-
-/* If your script uses the .timer class specifically: */
-.timer {
+#workspaces { margin: 0 4px; }
+#workspaces button {
+    padding: 0 8px;
+    color: @dim;
     background: transparent;
-    box-shadow: none;
-    padding: 0 14px;
-    margin: 4px 0;
-    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
+#workspaces button.active {
+    color: @fg;
+    border-bottom: 2px solid alpha(@accent, 0.7);
+}
+#workspaces button.urgent { color: @crit; }
+#workspaces button:hover {
+    color: @fg;
+    background: alpha(#ffffff, 0.04);
+    box-shadow: none;
+    text-shadow: none;
+}
+
+#window { color: @dim; }
+
+/* ── center ── */
+#clock {
+    font-size: 14px;
+    padding: 0 14px;
+    letter-spacing: 0.5px;
+}
+
+/* ── right ── */
+#custom-media          { color: @fg; }
+#custom-hw-icon { color: @dim; }
+
+#cpu.warning                          { color: @warn; }
+#cpu.critical, #temperature.critical  { color: @crit; }
+#battery.warning:not(.charging)       { color: @warn; }
+#battery.critical:not(.charging) {
+    color: @crit;
+    animation: pulse 1.2s ease-in-out infinite alternate;
+}
+@keyframes pulse { to { color: alpha(@crit, 0.4); } }
+
+#custom-power {
+    color: @dim;
+    font-size: 15px;
+    padding: 0 16px 0 10px;
+}
+#custom-power:hover { color: @crit; }
+
+#custom-media:hover, #clock:hover, #pulseaudio:hover, #backlight:hover,
+#network:hover, #custom-hw-icon:hover, #custom-logo:hover {
+    background: alpha(#ffffff, 0.04);
+}
+
+/* notification bell */
+#custom-notification { padding: 0 10px; color: @dim; font-size: 15px; }
+#custom-notification.notification { color: @accent; }
+#custom-notification.dnd-none,
+#custom-notification.dnd-notification { color: @warn; }
+#custom-notification.invisible { color: @faint; }
+#custom-notification:hover { background: alpha(#ffffff, 0.04); }
