@@ -4,3 +4,7 @@
 # app-generated icons (wine, jetbrains toolbox) + caches
 .local/share/icons/hicolor/
 **/icon-theme.cache
+# cava writes its own default config + shaders on first run
+.config/cava/config
+.config/cava/shaders/
+.config/cava/themes/
