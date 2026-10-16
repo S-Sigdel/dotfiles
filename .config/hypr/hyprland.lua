@@ -39,6 +39,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE && systemctl --user restart waybar swaync")
     hl.exec_cmd("hyprpaper")
     hl.exec_cmd("~/.config/hypr/scripts/visualizer.sh")   -- audio bars on the desktop, every monitor
+    hl.exec_cmd("~/.config/hypr/scripts/record-picker.py serve")   -- F9 recorder dialog, preloaded so it opens instantly
     hl.exec_cmd("ghostty --initial-window=false")   -- warm terminal daemon: instant SUPER+Enter
     hl.exec_cmd("swayosd-server -s ~/.config/swayosd/style.css --top-margin 0.82")
     hl.exec_cmd("wl-paste --type text --watch cliphist -db-path /tmp/cliphist.db -max-items 100 store")
