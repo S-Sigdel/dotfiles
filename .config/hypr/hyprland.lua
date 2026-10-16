@@ -369,6 +369,10 @@ hl.window_rule({ name = "pip", match = { title = "^(Picture-in-Picture|Picture i
 hl.window_rule({ name = "file-progress", match = { class = "^(org.kde.dolphin)$", title = "^(Copying.*|Moving.*|Progress.*)$" }, float = true })
 hl.window_rule({ name = "file-dialogs", match = { title = "^(Open File|Save File|Save As|Open Folder|File Upload.*)$" }, float = true, center = true })
 
+-- recorder dialog/countdown: centered, and gone instantly so it's never in the video
+hl.window_rule({ name = "recorder", match = { class = "^(dev.local.recorder)$" },
+                 float = true, center = true, no_anim = true, no_dim = true, pin = true })
+
 -- don't dim / fade media, games, screenshots
 local media_apps = "^(mpv|vlc|steam_app_.*|gamescope)$"
 hl.window_rule({ name = "media-opaque", match = { class = media_apps }, opacity = "1.0 override 1.0 override", no_dim = true })
